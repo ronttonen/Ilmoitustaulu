@@ -1,0 +1,8 @@
+MANIFEST.in
+ilmoitustaulu/__init__.py
+ilmoitustaulu/views.py
+ilmoitustaulu.egg-info/PKG-INFO
+ilmoitustaulu.egg-info/SOURCES.txt
+ilmoitustaulu.egg-info/dependency_links.txt
+ilmoitustaulu.egg-info/requires.txt
+ilmoitustaulu.egg-info/top_level.txt
