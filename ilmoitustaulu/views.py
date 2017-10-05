@@ -1,5 +1,7 @@
 from ilmoitustaulu import app
-from flask import render_template
+from flask import render_template, redirect, url_for, request
+
+
 
 @app.route('/')
 def index():
@@ -9,9 +11,17 @@ def index():
 def joelsivu():
 	return render_template("joelsivu.html")
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-	return render_template("joelsivu.html")
+	error = None
+	if request.method == 'POST':
+		if request.form['username'] != 'admin' or request.form['password'] != 'admin':
+			error = 'Pls try again'
+		else:
+			
+			return redirect(url_for('index'))
+			
+	return render_template("login.html", error=error)
 
 @app.route('/logout')
 def logout():
@@ -19,8 +29,8 @@ def logout():
 
 @app.route('/create_event')
 def create_event():
-	return render_template("joelsivu.html")
+	return render_template("create_event.html")
 
 @app.route('/list_events')
 def list_events():
-	return render_template("joelsivu.html")
+	return render_template("list_events.html")
