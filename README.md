@@ -65,3 +65,8 @@ Jos kaikki tarvittavat kirjastot on laitettu setup.py filuun voi käyttää myö
 Kirjastot mitä tarvitaan pyörimiseen (kaikki asentuu komennolla pip install {{kirjaston nimi}})
 	flask
 	flask-login
+	flask-sqlalchemy
+	pymysql
+	
+	
+Databaseen pitää myös luoda schema nimeltä ilmoitustauludb. Scheman tekeminen onnistuu helposti mysql workbenchillä

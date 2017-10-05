@@ -5,6 +5,6 @@ setup(
 	packages=['ilmoitustaulu'],
 	include_package_data=True,
 	install_requires=[
-		'flask','flask-login',
+		'flask','flask-login','flask-sqlalchemy','pymysql',
 	],
 )
