@@ -1,7 +1,7 @@
 from ilmoitustaulu import app
 from ilmoitustaulu import login_manager
 from flask import render_template, redirect, url_for, request, session
-from ilmoitustaulu.models import User
+from ilmoitustaulu.models import User, Event
 from database import db_session
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user, UserMixin
 
@@ -26,7 +26,7 @@ def index():
 			u = User(post_username, post_email, post_password)
 			db_session.add(u)
 			db_session.commit()
-			return render_template('login.html')
+			return redirect(url_for('login'))
 		
 	return render_template('home.html')
 
@@ -58,16 +58,27 @@ def login():
 
 
 @app.route('/create_event', methods=['GET','POST'])
+@login_required
 def create_event():
-	if request.method == 'POST':
-		return 'moi'
-	return render_template("create_event.html")
+        if request.method == 'POST':
+                db_session.add(Event(request.form['event_name']))
+                db_session.commit()
+                return redirect('/')
+        
+        return render_template("create_event.html")
 
 @app.route('/list_events')
 def list_events():
-	return render_template("list_events.html")
+        events = Event.query.all()
+        return render_template("list_events.html", events=events)
 
 @app.route('/logout')
+@login_required
 def logout():
 	logout_user()
 	return redirect('/')
+
+@app.route('/event/<eventurlid>')
+def event(eventurlid):
+        info = Event.query.filter_by(urlid = eventurlid).first()
+        return render_template('event.html', info=info)

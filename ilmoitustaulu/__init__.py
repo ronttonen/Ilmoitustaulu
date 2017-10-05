@@ -1,4 +1,4 @@
-from ilmoitustaulu.models import User
+from ilmoitustaulu.models import User, Event
 from flask import Flask, session
 from flask_login import LoginManager, current_user, UserMixin
 from ilmoitustaulu.database import db_session

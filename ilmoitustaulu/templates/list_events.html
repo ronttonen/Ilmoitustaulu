@@ -1,7 +1,9 @@
 {% extends 'layout.html' %}
 {% block content %}
 <div class="list_events">
-	
+	{% for event in events %}
+	<li>{{ event.name }}, <a href="{{ url_for('event', eventurlid=event.urlid) }}">{{ event.urlid }}</a></li>
+	{% endfor %}
 	here are all events
 </div>
 {% endblock %}

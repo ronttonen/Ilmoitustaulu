@@ -27,9 +27,11 @@ class Event(Base):
     __tablename__ = 'events'
     id = Column(Integer, primary_key=True)
     name = Column(String(50), unique=False)
+    urlid = Column(String(50), unique=True)
     
-    def __init__(self, name=None):
+    def __init__(self, name=None, urlid=None):
         self.name = name
+        self.urlid = name + '_ %s' % (Event.query.count()+1) 
     
     #ei pakollinen    
     #def __repr__(self):
