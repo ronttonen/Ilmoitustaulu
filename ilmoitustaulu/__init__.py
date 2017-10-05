@@ -12,6 +12,7 @@ login_manager.init_app(app)
 def shutdown_session(exception=None):
     db_session.remove()
 
-import ilmoitustaulu.views
+
 import ilmoitustaulu.database
 import ilmoitustaulu.models
+import ilmoitustaulu.views

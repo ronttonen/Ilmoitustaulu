@@ -1,6 +1,16 @@
 {% extends "layout.html" %}
 {% block content %}
 <div class="home">This is home page
-<p>moi</p></div>
+	<p>moi</p>
+
+	<h1>Register Form</h1>
+
+	<form action="" method="post">
+		<input type="text" placeholder="Username" name="username" value="{{ request.form.username }}">
+		<input type="text" placeholder="Email" name="email" value="{{ request.form.email }}">
+		<input type="submit" value="Register">
+	</form>
+
+</div>
 <img src="../static/media/index.jpeg" />
 {% endblock %}

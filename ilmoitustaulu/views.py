@@ -1,10 +1,18 @@
 from ilmoitustaulu import app
 from flask import render_template, redirect, url_for, request
+from models import User
+from database import db_session
 
 
 
-@app.route('/')
+@app.route('/', methods=['GET','POST'])
 def index():
+	error = None
+	if request.method == 'POST':
+		u = User(request.form['username'], request.form['email'])
+		db_session.add(u)
+		db_session.commit()
+		
 	return render_template('home.html')
 
 @app.route("/joel")
