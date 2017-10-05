@@ -60,7 +60,8 @@ GIT KÄYTTÖ:
 		git commit -m "KUVAA MUUTOKSIA YKSINKERTAISESTI"
 		git push
 		
-		
+
+Jos kaikki tarvittavat kirjastot on laitettu setup.py filuun voi käyttää myös komentoa python setup.py install		
 Kirjastot mitä tarvitaan pyörimiseen (kaikki asentuu komennolla pip install {{kirjaston nimi}})
 	flask
 	flask-login
