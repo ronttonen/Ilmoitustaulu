@@ -21,8 +21,13 @@ Ympäristö ohje:
 		export FLASK_APP=ilmoitustaulu 
 		pip install -e . 
 		flask run
+	Debug päälle
+		export FLASK_DEBUG=1
+	Database initti
+		flask initdb
 	Flask/serverin käynnistys jatkossa
 		flask run
+		
 		
 	nettisivun pitäisi olla osoitteessa http://127.0.0.1:5000/ VIRTUAALI KONEESSA
 		
