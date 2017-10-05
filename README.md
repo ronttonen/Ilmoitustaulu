@@ -59,3 +59,8 @@ GIT KÄYTTÖ:
 		git add -A
 		git commit -m "KUVAA MUUTOKSIA YKSINKERTAISESTI"
 		git push
+		
+		
+Kirjastot mitä tarvitaan pyörimiseen (kaikki asentuu komennolla pip install {{kirjaston nimi}})
+	flask
+	flask-login
