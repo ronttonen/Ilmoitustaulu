@@ -4,7 +4,6 @@ from flask import render_template, redirect, url_for, request, session
 from ilmoitustaulu.models import User, Event
 from database import db_session
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user, UserMixin
-
 @login_manager.user_loader
 def load_user(user_id):
         
@@ -57,11 +56,16 @@ def login():
 @login_required
 def create_event():
         if request.method == 'POST':
-                db_session.add(Event(request.form['event_name']))
+                event_name = request.form['event_name']
+                event_description = request.form['description']
+                u = Event(event_name, event_description)
+                db_session.add(u)
                 db_session.commit()
                 return redirect('/')
         
         return render_template("create_event.html")
+
+#here we list eventws
 
 @app.route('/list_events')
 def list_events():
@@ -79,6 +83,8 @@ def event(eventurlid):
         info = Event.query.filter_by(urlid = eventurlid).first()
         return render_template('event.html', info=info)
 
+
 @app.errorhandler(401)
 def unauthorized(e):
         return render_template("401.html")
+
