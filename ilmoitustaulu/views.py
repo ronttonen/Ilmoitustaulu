@@ -69,7 +69,9 @@ def create_event():
                 u = Event(event_name, event_description, current_user.id)
                 db_session.add(u)
                 db_session.commit()
-                return redirect('/')
+                e = Event.query.filter_by(user=current_user.id).all()
+                e=e[-1]
+                return redirect('/event/%s' %(str(e.urlid)))
         
         return render_template("create_event.html")
 
