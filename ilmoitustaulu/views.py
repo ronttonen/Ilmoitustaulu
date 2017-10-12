@@ -60,11 +60,16 @@ def login():
 @login_required
 def create_event():
         if request.method == 'POST':
-                db_session.add(Event(request.form['event_name']))
+                event_name = request.form['event_name']
+                event_description = request.form['description']
+                u = Event(event_name, event_description)
+                db_session.add(u)
                 db_session.commit()
                 return redirect('/')
         
         return render_template("create_event.html")
+
+#here we list eventws
 
 @app.route('/list_events')
 def list_events():
