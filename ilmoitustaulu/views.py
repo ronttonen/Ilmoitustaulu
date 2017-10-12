@@ -50,8 +50,8 @@ def login():
 		user = User.query.filter_by(name=post_username).first()
                 salt = user.salt
                 hashed_password = hashlib.sha512(post_password + salt).hexdigest()
-		if user.password != hashed_password:
-			return 'wrong password'
+                if user.password != hashed_password:
+                        return 'wrong password'
 		else:
 			login_user(user, post_username)
 			
