@@ -66,7 +66,7 @@ def create_event():
         if request.method == 'POST':
                 event_name = request.form['event_name']
                 event_description = request.form['description']
-                u = Event(event_name, event_description)
+                u = Event(event_name, event_description, current_user.id)
                 db_session.add(u)
                 db_session.commit()
                 return redirect('/')
