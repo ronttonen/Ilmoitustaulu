@@ -4,7 +4,6 @@ from flask import render_template, redirect, url_for, request, session
 from ilmoitustaulu.models import User, Event
 from database import db_session
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user, UserMixin
-
 @login_manager.user_loader
 def load_user(user_id):
         
@@ -29,10 +28,6 @@ def index():
 			return redirect(url_for('login'))
 		
 	return render_template('home.html')
-
-@app.route("/joel")
-def joelsivu():
-	return render_template("joelsivu.html")
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -88,6 +83,10 @@ def event(eventurlid):
         info = Event.query.filter_by(urlid = eventurlid).first()
         return render_template('event.html', info=info)
 
+
+
 @app.errorhandler(401)
-def custom_error(e):
-        return redirect('/login'), 401
+def unauthorized(e):
+        return render_template("401.html")
+
+
