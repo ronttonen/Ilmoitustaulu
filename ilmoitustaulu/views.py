@@ -4,6 +4,12 @@ from flask import render_template, redirect, url_for, request, session
 from ilmoitustaulu.models import User, Event
 from database import db_session
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user, UserMixin
+import hashlib, uuid
+
+
+
+
+
 @login_manager.user_loader
 def load_user(user_id):
         
@@ -42,7 +48,9 @@ def login():
 		if User.query.filter_by(name=post_username).count() == 0:
 			return 'wrong username'
 		user = User.query.filter_by(name=post_username).first()
-		if user.password != post_password:
+                salt = user.salt
+                hashed_password = hashlib.sha512(post_password + salt).hexdigest()
+		if user.password != hashed_password:
 			return 'wrong password'
 		else:
 			login_user(user, post_username)
