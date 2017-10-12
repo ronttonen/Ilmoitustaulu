@@ -9,7 +9,8 @@ class User(Base, UserMixin):
     id = Column(Integer, primary_key=True)
     name = Column(String(50), unique=True)
     email = Column(String(120), unique=True)
-    password = Column(String(50), unique=False)
+    password = Column(String(255), unique=False)
+    salt = Column(String(255), unique=False)
     
 
     def __init__(self, name=None, email=None, password=None):
@@ -17,6 +18,7 @@ class User(Base, UserMixin):
         self.email = email
         salt = uuid.uuid4().hex
         hashed_password = hashlib.sha512(password + salt).hexdigest()
+        self.salt = salt
         self.password = hashed_password
         
 
