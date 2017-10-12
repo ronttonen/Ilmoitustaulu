@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy import Column, Integer, String, Boolean,ForeignKey
 from ilmoitustaulu.database import Base
 from flask_login import UserMixin
 import time
@@ -33,11 +33,18 @@ class Event(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(50), unique=False)
     description = Column(String(255), unique=False)
+    image = Column(String(255), unique=True)
+    user =  Column(Integer, ForeignKey(User.id), nullable=False)
     urlid = Column(String(50), unique=True)
     
-    def __init__(self, name=None, urlid=None,description=None):
-        self.name = name
+    #user_Id = relationship('User', foreign_keys='Event.user')
 
+    
+    def __init__(self, name=None, description=None, user=None, image=None):
+        self.name = name
+        self.description = description
+        self.user = user
+        self.image = name + '_%s' % str(time.time()).replace(".", "")
         self.urlid = name + '_%s' % str(time.time()).replace(".", "") 
     #ei pakollinen    
     #def __repr__(self):
