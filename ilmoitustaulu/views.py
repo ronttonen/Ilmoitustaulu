@@ -87,3 +87,7 @@ def logout():
 def event(eventurlid):
         info = Event.query.filter_by(urlid = eventurlid).first()
         return render_template('event.html', info=info)
+
+@app.errorhandler(401)
+def custom_error(e):
+        return redirect('/login'), 401
