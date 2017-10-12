@@ -16,7 +16,7 @@ class User(Base, UserMixin):
         self.email = email
         self.password = password
         
-  
+
     
         
     #ei pakollinen
@@ -27,10 +27,12 @@ class Event(Base):
     __tablename__ = 'events'
     id = Column(Integer, primary_key=True)
     name = Column(String(50), unique=False)
+    description = Column(String(255), unique=False)
     urlid = Column(String(50), unique=True)
     
-    def __init__(self, name=None, urlid=None):
+    def __init__(self, name=None, urlid=None,description=None):
         self.name = name
+        self.description = description
         self.urlid = name + '_ %s' % (Event.query.count()+1) 
     
     #ei pakollinen    
