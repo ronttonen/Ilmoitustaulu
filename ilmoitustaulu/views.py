@@ -4,7 +4,6 @@ from flask import render_template, redirect, url_for, request, session
 from ilmoitustaulu.models import User, Event
 from database import db_session
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user, UserMixin
-
 @login_manager.user_loader
 def load_user(user_id):
         

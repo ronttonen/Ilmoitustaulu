@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, Boolean
 from ilmoitustaulu.database import Base
 from flask_login import UserMixin
+import time
 
 
 class User(Base, UserMixin):
@@ -31,7 +32,7 @@ class Event(Base):
     
     def __init__(self, name=None, urlid=None):
         self.name = name
-        self.urlid = name + '_ %s' % (Event.query.count()+1) 
+        self.urlid = name + '_%s' % str(time.time()).replace(".", "") 
     
     #ei pakollinen    
     #def __repr__(self):
