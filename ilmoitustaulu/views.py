@@ -30,10 +30,6 @@ def index():
 		
 	return render_template('home.html')
 
-@app.route("/joel")
-def joelsivu():
-	return render_template("joelsivu.html")
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 	error = None
@@ -82,3 +78,7 @@ def logout():
 def event(eventurlid):
         info = Event.query.filter_by(urlid = eventurlid).first()
         return render_template('event.html', info=info)
+
+@app.errorhandler(401)
+def unauthorized(e):
+        return render_template("401.html")
