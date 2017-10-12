@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, Boolean
 from ilmoitustaulu.database import Base
 from flask_login import UserMixin
 import time
-
+import hashlib, uuid
 
 class User(Base, UserMixin):
     __tablename__ = 'users'
@@ -15,7 +15,9 @@ class User(Base, UserMixin):
     def __init__(self, name=None, email=None, password=None):
         self.name = name
         self.email = email
-        self.password = password
+        salt = uuid.uuid4().hex
+        hashed_password = hashlib.sha512(password + salt).hexdigest()
+        self.password = hashed_password
         
 
     
@@ -33,13 +35,8 @@ class Event(Base):
     
     def __init__(self, name=None, urlid=None,description=None):
         self.name = name
-<<<<<<< HEAD
+
         self.urlid = name + '_%s' % str(time.time()).replace(".", "") 
-=======
-        self.description = description
-        self.urlid = name + '_ %s' % (Event.query.count()+1) 
->>>>>>> ff5c5f5f21c322f6a99fc3e9861a723dc10b4c50
-    
     #ei pakollinen    
     #def __repr__(self):
      #   return '<Event %r>' % (self.name)
