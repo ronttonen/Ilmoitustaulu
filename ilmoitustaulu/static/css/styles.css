@@ -12,6 +12,9 @@ h1{
 }
 
 /*homepage form fill tällä laitoin formeihin välejä ymsmoms.*/
+
+/*border: 3px black solid*/
+
 .form{
 	padding: 5px;
 	
@@ -60,9 +63,9 @@ li a:hover {
 	justify-content: space-around;
 	padding: 10px;
 	flex:1;
-	
-	
+
 }
+
 .colgrey{
 	justify-content: space-around;
 	padding: 10px;
@@ -77,3 +80,4 @@ li a:hover {
 	flex-direction: column;
 	justify-content: space-between;
 }
+
