@@ -1,19 +1,44 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="home">This is home page
-	<p>moi {{ current_user.name }} {{ current_user.id }}  {{ current_user.password }}</p>
-	{% if current_user.is_authenticated %}
-	<h1>IT IS VERY NICE YOU HAVE REGISTERED!</h1>
-	{% else %}
-	<h1>Register Form</h1>
 
-	<form action="" method="post">
-		<input type="text" placeholder="Username" name="username" value="{{ request.form.username }}">
-		<input type="text" placeholder="Email" name="email" value="{{ request.form.email }}">
-		<input type="password" placeholder="Password" name="password" value="{{ request.form.password }}">
-		<input type="submit" value="Register">
+<body>
+	<div class="contentlog">
+	<div class="col">
+		<h1>Welcome to Event Board</h1>
+		{% if current_user.is_authenticated %}
+		Hello {{ current_user.name }}! <!--- {{ current_user.id }}  {{ current_user.password }} --> <br>
+		Welcome to use Eventboard!
+		Information information information
+		{% else %}
+	</div>
+	<form class="form" action="" method="post">
+		<div class="form"><input type="text" placeholder="Username" name="username" value="{{ request.form.username }}"><br></div>	
+		<div class="form"><input type="text" placeholder="Email" name="email" value="{{ request.form.email }}"><br></div>
+		<div class="form"><input type="password" placeholder="Password" name="password" value="{{ request.form.password }}"><br></div>
+		<input class="button" type="submit" value="Register" name="registerbtn">
+					
 	</form>
 	{% endif %}
-</div>
-<img src="../static/media/index.jpeg" />
+	</div>
+	<div class="content">
+		<div class="colgrey"> <img src="../static/media/index.jpeg" /></div>
+	
+		<div class="colgrey">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur tristique iaculis
+		augue, sit amet vulputate neque dapibus eu. In hac habitasse platea dictumst. Phasellus dignissim lacinia
+		nulla non cursus. Vivamus quis maximus lacus. Maecenas ac urna sit amet eros lacinia scelerisque at eu massa.
+		Vivamus nec gravida dolor. Morbi ullamcorper, velit nec ultricies
+		rhoncus, velit mauris vestibulum orci, non dapibus dolor lectus nec mi. Pellentesque sit amet magna commodo,
+		rutrum sapien in, posuere lorem. Ut vel gravida dui. Sed ornare imperdiet purus,
+		eget consectetur lectus cursus sodales. Aenean elementum massa sit amet elementum pharetra. Mauris vitae t
+		urpis ut sapien malesuada
+		hendrerit vitae sit amet sapien. In mattis faucibus enim, quis mattis urna scelerisque a.
+		In imperdiet odio ut pellentesque tincidunt. Nulla nec velit et nulla dignissim dapibus. Nulla facilisi.
+		Nulla eget leo vitae lorem cursus tempus eu eleifend ante. Aliquam nec consectetur ante, sit amet vehicula erat.
+		Sed tincidunt onvallis lectus vel convallis. In malesuada nibh at mollis hendrerit. Cras dapibus viverra tortor. Fusce blandit
+		lobortis nisi, vel mattis massa consectetur at.</div>
+	</div>
+				
+
+</body>
+
 {% endblock %}

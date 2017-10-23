@@ -1,10 +1,30 @@
 {% extends 'layout.html' %}
 {% block content %}
-<div class="create_event">
-	here you can create events
-	<form action="" method="post">
-		<input type="text" placeholder="Event Name" name="event_name">
-		<textarea type="text" placeholder="Description" name="description"></textarea>
-	</form>
+<div class="col">
+		<h1>Here you can create events</h1>
+	</div>
+<div class="content">
+		
+	<div class="colgrey">
+		<form action="" method="post">
+			<div class="form">
+			<input type="text" placeholder="Event Name" name="event_name"></div>
+			<div class="form">
+			<input type="text" placeholder="Event Location" name="event_name"></div>
+			<div class="form">
+			<input type="text" placeholder="Price" name="event_name"></div>
+			<div class="form">
+			<textarea type="text" placeholder="Event Description" name="description"></textarea></div>
+		</form>
+	</div>
+	<div class="colgrey">
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur tristique iaculis
+		augue, sit amet vulputate neque dapibus eu. In hac habitasse platea dictumst. Phasellus dignissim lacinia
+		nulla non cursus. Vivamus quis maximus lacus. Maecenas ac urna sit amet eros lacinia scelerisque at eu massa.
+		Vivamus nec gravida dolor. Morbi ullamcorper, velit nec ultricies
+		<br>
+		<br>
+		 muita lisäyksiä
+	</div>
 </div>
 {% endblock %}
