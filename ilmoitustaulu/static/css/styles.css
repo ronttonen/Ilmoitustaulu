@@ -1,7 +1,7 @@
 body{
 	background-color: grey;
 	font-family: sans-serif;
-	
+	color: white;
 }
 h1{
 	color:white;
@@ -19,7 +19,7 @@ h1{
 	padding: 5px;
 	
 }
-
+ /*button tyyli*/
 .form input[type="submit"]{
 	padding: 20px;
 	color:#fff;
@@ -34,6 +34,7 @@ ul {
     padding: 0;
     overflow: hidden;
     background-color: #333;
+	border-top-left-radius: 40px;
 }
 
 li {
@@ -57,16 +58,14 @@ li a:hover {
 .content{
 	display:flex;
 	
-	justify-content: space-between;
 }
 .col{
-	justify-content: space-around;
 	padding: 10px;
 	flex:1;
-
+	background-color:#33334d;
 }
 
-.colgrey{
+.colgreyleft{
 	justify-content: space-around;
 	padding: 10px;
 	flex:1;
@@ -74,10 +73,17 @@ li a:hover {
 	color: white;
 	
 }
+.colgreyright{
+	justify-content: space-around;
+	padding: 10px;
+	flex:1;
+	background-color:#333;
+	color: white;
+	border-bottom-right-radius: 40px;
+}
 .contentlog{
 	display:flex;
-	
 	flex-direction: column;
-	justify-content: space-between;
+	
 }
 
