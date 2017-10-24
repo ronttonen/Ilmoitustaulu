@@ -72,6 +72,7 @@ Kirjastot mitä tarvitaan pyörimiseen (kaikki asentuu komennolla pip install {{
 	flask-login
 	flask-sqlalchemy
 	pymysql
+	flask-mail
 	
 	
 Databaseen pitää myös luoda schema nimeltä ilmoitustauludb. Scheman tekeminen onnistuu helposti mysql workbenchillä

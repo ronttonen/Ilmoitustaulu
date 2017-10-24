@@ -188,6 +188,15 @@ def user_settings_change_password(username):
                 
         return render_template('changepassword.html', info=info)
 
+@app.route('/login/passwordreset', methods=['GET','POST'])
+def password_reset():
+        if request.method == 'POST':
+                user_email = request.form['email']
+                if User.query.filter_by(email = user_email).count() == 0:
+                        return 'Invalid email'
+                user_account = User.query.filter_by(email = user_email).first()
+                
+        return render_template('forgotpassword.html')
 
 @app.errorhandler(401)
 def unauthorized(e):
