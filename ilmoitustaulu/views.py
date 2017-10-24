@@ -132,7 +132,7 @@ def event(eventurlid):
 def user_settings(username):
         
                 
-        if User.query.filter_by(name = username).count() == 0:
+        if User.query.filter_by(name = username).count() == 0 or current_user.name != username:
                 return redirect('/')
                 
         info = User.query.filter_by(name = username).first()
@@ -153,7 +153,7 @@ def user_settings(username):
 def user_settings_change_password(username):
         
                 
-        if User.query.filter_by(name = username).count() == 0:
+        if User.query.filter_by(name = username).count() == 0 or current_user.name != username:
                 return redirect('/')
         
                 
@@ -164,6 +164,8 @@ def user_settings_change_password(username):
                 hashed_password = hashlib.sha512(old_password + salt).hexdigest()
                 if info.password != hashed_password:
                         return 'wrong password'
+                elif request.form['new-password'] == '':
+                        return 'no new password'
                 else:
                         new_password = request.form['new-password']
                         salt = uuid.uuid4().hex
