@@ -34,7 +34,7 @@ class Event(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(50), unique=False)
     description = Column(String(255), unique=False)
-    image = Column(String(255), unique=True)
+    image = Column(String(255), unique=False)
     user =  Column(Integer, ForeignKey(User.id), nullable=False)
     price = Column(String(25), unique=False)
     location = Column(String(55), unique=False)

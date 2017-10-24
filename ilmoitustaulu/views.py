@@ -3,7 +3,7 @@ import time
 from random import randint
 from ilmoitustaulu import app, login_manager, ALLOWED_EXTENSIONS
 from flask import render_template, redirect, url_for, request, session
-from ilmoitustaulu.models import User, Event
+from ilmoitustaulu.models import User, Event, UserSavedEvents
 from database import db_session
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user, UserMixin
 import hashlib, uuid
@@ -37,9 +37,16 @@ def index():
 			u = User(post_username, post_email, post_password)
 			db_session.add(u)
 			db_session.commit()
-			return redirect(url_for('login'))
-		
-	return render_template('home.html')
+                        return redirect(url_for('login'))
+        
+        if current_user.is_authenticated:
+                user_info = User.query.filter_by(name = current_user.name).first()
+                ownevents = Event.query.filter_by(user = current_user.id).all()
+                #pinnedevents = UserSavedEvents.query.filter_by(user = current_user.id).all()
+                #pinnedevents = Event.query.filter_by(id = pinnedevents.event).all()
+                return render_template('home.html', user_info=user_info, ownevents = ownevents)
+        else:
+                return render_template('home.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

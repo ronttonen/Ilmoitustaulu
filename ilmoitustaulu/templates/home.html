@@ -8,7 +8,16 @@
 		{% if current_user.is_authenticated %}
 		Hello {{ current_user.name }}! <!--- {{ current_user.id }}  {{ current_user.password }} --> <br>
 		Welcome to use Eventboard!
-		Information information information
+		Here are your events:
+		{% for event in ownevents %}
+		<li>{{ event.name }}, <a href="{{ url_for('event', eventurlid=event.urlid) }}">{{ event.urlid }}</a></li>
+		{% endfor %}
+		
+		Here are pinned events:
+		{% for event in pinnedevents %}
+		<li>{{ event.event }}</li>
+		{% endfor %}
+		
 		{% else %}
 	</div>
 	<div class="colgreyleft">
