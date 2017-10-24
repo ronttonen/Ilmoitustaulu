@@ -1,13 +1,14 @@
 import os
 import time
 from random import randint
-from ilmoitustaulu import app, login_manager, ALLOWED_EXTENSIONS
+from ilmoitustaulu import app, login_manager, ALLOWED_EXTENSIONS, mail
 from flask import render_template, redirect, url_for, request, session
 from ilmoitustaulu.models import User, Event, UserSavedEvents
 from database import db_session
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user, UserMixin
 import hashlib, uuid
 from werkzeug.utils import secure_filename
+from flask_mail import Mail, Message
 
 
 #check if uploaded file extension is in ALLOWED_EXTENSIONS (defined in __init__.py)
@@ -203,3 +204,9 @@ def unauthorized(e):
         return render_template("401.html")
 
 
+@app.route('/msgtest')
+def sendmessage():
+        msg = Message('Hello', sender = 'flaskilmoitustaulu@gmail.com', recipients = ['flaskilmoitustaulu@gmail.com'])
+        msg.body = "Hello Flask message sent from Flask-Mail"
+        mail.send(msg)
+        return "Sent"
