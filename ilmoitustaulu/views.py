@@ -196,6 +196,10 @@ def password_reset():
                 if User.query.filter_by(email = user_email).count() == 0:
                         return 'Invalid email'
                 user_account = User.query.filter_by(email = user_email).first()
+                msg = Message ('Here is password reset link', sender = 'flaskilmoitustaulu@gmail.com', recipients = [user_email])
+                msg.body = "Reset link %s" % (user_account.name)
+                mail.send(msg)
+                return redirect('/')
                 
         return render_template('forgotpassword.html')
 
