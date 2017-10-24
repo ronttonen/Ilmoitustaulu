@@ -120,12 +120,64 @@ def logout():
 
 @app.route('/event/<eventurlid>')
 def event(eventurlid):
+        
+        if Event.query.filter_by(urlid = eventurlid).count == 0:
+                return redirect('/')
+        
         info = Event.query.filter_by(urlid = eventurlid).first()
         
         return render_template('event.html', info=info)
 
+@app.route('/settings/<username>', methods=['GET', 'POST'])
+def user_settings(username):
+        
+                
+        if User.query.filter_by(name = username).count() == 0:
+                return redirect('/')
+                
+        info = User.query.filter_by(name = username).first()
+        
+        if request.method == 'POST':
+                user_email = request.form['email']
+                if user_email == '' or User.query.filter_by(name=user_email).count() > 0:
+                        return render_template('settings.html', info=info)
+                else:
+                        info.email = user_email
+                        db_session.commit()
+                        return redirect('/')
+                
+        
+        return render_template('settings.html', info=info)
 
-
+@app.route('/settings/<username>/changepassword', methods=['GET','POST'])
+def user_settings_change_password(username):
+        
+                
+        if User.query.filter_by(name = username).count() == 0:
+                return redirect('/')
+        
+                
+        info = User.query.filter_by(name = username).first()
+        if request.method == 'POST':
+                old_password = request.form['old-password']
+                salt = info.salt
+                hashed_password = hashlib.sha512(old_password + salt).hexdigest()
+                if info.password != hashed_password:
+                        return 'wrong password'
+                else:
+                        new_password = request.form['new-password']
+                        salt = uuid.uuid4().hex
+                        
+                        new_password = hashlib.sha512(new_password + salt).hexdigest()
+                        
+                        info.salt = salt
+                        info.password = new_password
+                
+                        db_session.commit()
+                        logout_user()
+                        return redirect(url_for('login'))
+                
+        return render_template('changepassword.html', info=info)
 
 
 @app.errorhandler(401)

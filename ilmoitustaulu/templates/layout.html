@@ -3,6 +3,7 @@
 		<head>
 			<link rel="stylesheet" type="text/css" href="../static/css/styles.css">
 			<script src='../static/js/example.js'></script>
+			
 		</head>
 			<body>
 				<div class="container">	
@@ -10,6 +11,7 @@
 							<ul>
 								<li><a class="active" href="{{ url_for('index') }}">Home</a></li>
 								{% if current_user.is_authenticated %}
+								<li><a href="{{ url_for('user_settings', username = current_user.name) }}">Settings</a></li>
 								<li><a href="{{ url_for('logout') }}">Logout</a></li>
 								{% else %}
 								<li><a href="{{ url_for('login') }}">Login</a></li>

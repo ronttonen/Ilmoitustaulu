@@ -21,6 +21,7 @@ class User(Base, UserMixin):
         self.salt = salt
         self.password = hashed_password
         
+    
 
     
         

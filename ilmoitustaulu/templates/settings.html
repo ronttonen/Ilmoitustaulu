@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="user-settings">
+	<form class="form" action="" method="post">
+			
+		<p>email</p>
+		<div class="form"><input type="text" placeholder="Email" name="email" value="{{ info.email }}"><br></div>
+		
+		<input class="button" type="submit" value="Submit Changes" name="registerbtn">
+					
+		</form>
+	<a href="{{ url_for('user_settings_change_password', username = current_user.name) }}">change password</a>
+	{{ info.name}}
+</div>
+{% endblock %}
