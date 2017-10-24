@@ -77,8 +77,13 @@ def create_event():
 
 #here we list eventws
 
-@app.route('/list_events')
+@app.route('/list_events', methods=['GET', 'POST'])
 def list_events():
+        if request.method == 'POST':
+                if current_user.id != None:
+                        event = request.form['event_id']
+                        db_session.add(current_user.id, event)
+                        db_session.commit()
         events = Event.query.all()
         return render_template("list_events.html", events=events)
 

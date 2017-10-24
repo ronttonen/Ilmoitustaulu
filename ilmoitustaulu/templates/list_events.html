@@ -3,7 +3,13 @@
 <div class="list_events">
 	{% for event in events %}
 	<li>{{ event.name }}, <a href="{{ url_for('event', eventurlid=event.urlid) }}">{{ event.urlid }}</a></li>
+	
+	<form>
+		<input type='hidden' name='event_id' value='{{event.id}}'>
+		<button type='submit'></button>
+	</form>
 	{% endfor %}
 	here are all events
 </div>
+<script></script>
 {% endblock %}
