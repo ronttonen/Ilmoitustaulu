@@ -49,6 +49,7 @@ class Event(Base):
     #ei pakollinen    
     #def __repr__(self):
      #   return '<Event %r>' % (self.name)
+
      
 class UserSavedEvents(Base):
     id = Column(Integer, primary_key = True)
@@ -58,3 +59,4 @@ class UserSavedEvents(Base):
     def __init__(self, user=None, event=None):
         self.user=user
         self.event=event
+
