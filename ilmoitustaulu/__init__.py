@@ -5,15 +5,17 @@ from ilmoitustaulu.database import db_session
 from flask_mail import Mail, Message
 
 
-#maili tili flaskilmoitustaulu@gmail.com // kikkeli15!
+#mail account flaskilmoitustaulu@gmail.com // kikkeli15!
 app = Flask(__name__)
 
+#configure mailing server
 app.config['MAIL_SERVER']='smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USERNAME'] = 'flaskilmoitustaulu@gmail.com'
 app.config['MAIL_PASSWORD'] = 'kikkeli15!'
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
+#create mailing "app"
 mail=Mail(app)
 
 
@@ -22,9 +24,12 @@ mail=Mail(app)
 
 app.secret_key = 'ron'
 
+#configure folder where uploads should go
 UPLOAD_FOLDER = '/home/ron/Ilmoitustaulu/ilmoitustaulu/static/media'
+#allowed extensions on uploaded files, should take txt off
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
+#configure app to recognize upload folder as de place
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 login_manager = LoginManager()

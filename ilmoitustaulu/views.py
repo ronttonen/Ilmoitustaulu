@@ -40,6 +40,8 @@ def index():
 			db_session.commit()
                         return redirect(url_for('login'))
         
+        #added functionality to show users own events
+        #couldnt get pinnedevents to work yet (events user has favorited) had some db issue fix later
         if current_user.is_authenticated:
                 user_info = User.query.filter_by(name = current_user.name).first()
                 ownevents = Event.query.filter_by(user = current_user.id).all()
@@ -139,7 +141,7 @@ def event(eventurlid):
 @app.route('/settings/<username>', methods=['GET', 'POST'])
 def user_settings(username):
         
-                
+        #check authorization to go to settings        
         if User.query.filter_by(name = username).count() == 0 or current_user.name != username:
                 return redirect('/')
                 
@@ -150,6 +152,7 @@ def user_settings(username):
                 if user_email == '' or User.query.filter_by(name=user_email).count() > 0:
                         return render_template('settings.html', info=info)
                 else:
+                        #if user changes email to something that isnt empty database gets updated
                         info.email = user_email
                         db_session.commit()
                         return redirect('/')
@@ -160,13 +163,14 @@ def user_settings(username):
 @app.route('/settings/<username>/changepassword', methods=['GET','POST'])
 def user_settings_change_password(username):
         
-                
+         #if user doesnt exist or if current_user is not authorized to enter redirect to front page       
         if User.query.filter_by(name = username).count() == 0 or current_user.name != username:
                 return redirect('/')
         
                 
         info = User.query.filter_by(name = username).first()
         if request.method == 'POST':
+                
                 old_password = request.form['old-password']
                 salt = info.salt
                 hashed_password = hashlib.sha512(old_password + salt).hexdigest()
@@ -175,6 +179,7 @@ def user_settings_change_password(username):
                 elif request.form['new-password'] == '':
                         return 'no new password'
                 else:
+                        #create new salt and hash, init didnt work on updates for some reason
                         new_password = request.form['new-password']
                         salt = uuid.uuid4().hex
                         
@@ -184,6 +189,7 @@ def user_settings_change_password(username):
                         info.password = new_password
                 
                         db_session.commit()
+                        #log user out after changing password
                         logout_user()
                         return redirect(url_for('login'))
                 
@@ -193,8 +199,10 @@ def user_settings_change_password(username):
 def password_reset():
         if request.method == 'POST':
                 user_email = request.form['email']
+                #check if email exists
                 if User.query.filter_by(email = user_email).count() == 0:
                         return 'Invalid email'
+                #send email to user if email exists
                 user_account = User.query.filter_by(email = user_email).first()
                 msg = Message ('Here is password reset link', sender = 'flaskilmoitustaulu@gmail.com', recipients = [user_email])
                 msg.body = "Reset link %s" % (user_account.name)
@@ -208,6 +216,7 @@ def unauthorized(e):
         return render_template("401.html")
 
 
+#just a test to check out how mailing service works
 @app.route('/msgtest')
 def sendmessage():
         msg = Message('Hello', sender = 'flaskilmoitustaulu@gmail.com', recipients = ['flaskilmoitustaulu@gmail.com'])
