@@ -42,13 +42,13 @@ class Event(Base):
     #user_Id = relationship('User', foreign_keys='Event.user')
 
     
-    def __init__(self, name=None, description=None, user=None, price=None, location=None):
+    def __init__(self, name=None, description=None, user=None, price=None, location=None, image=None):
         self.name = name
         self.description = description
         self.user = user
         self.price = price
         self.location = location
-        self.image = name + '_%s' % str(time.time()).replace(".", "")
+        self.image = image
         self.urlid = name + '_%s' % str(time.time()).replace(".", "") 
     #ei pakollinen    
     #def __repr__(self):

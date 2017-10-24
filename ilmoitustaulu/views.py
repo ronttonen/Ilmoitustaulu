@@ -1,13 +1,19 @@
-from ilmoitustaulu import app
-from ilmoitustaulu import login_manager
+import os
+import time
+from random import randint
+from ilmoitustaulu import app, login_manager, ALLOWED_EXTENSIONS
 from flask import render_template, redirect, url_for, request, session
 from ilmoitustaulu.models import User, Event
 from database import db_session
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user, UserMixin
 import hashlib, uuid
+from werkzeug.utils import secure_filename
 
 
-
+#check if uploaded file extension is in ALLOWED_EXTENSIONS (defined in __init__.py)
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 @login_manager.user_loader
@@ -68,8 +74,22 @@ def create_event():
                 event_description = request.form['event_description']
                 event_price = request.form['event_price']
                 event_location = request.form['event_location']
-                #event_image
-                u = Event(event_name, event_description, current_user.id, event_price, event_location)
+                #file upload works, just need to fix the paths to work on production also, anyways the main idea is here
+                file = request.files['file']
+                if file and allowed_file(file.filename):
+                        #change name to time and random integer
+                        file.filename = '%s%s.%s' % (str(time.time()).replace(".", ""), randint(11111, 99999), file.filename.rsplit('.', 1)[1].lower())
+                        filename = secure_filename(file.filename)
+                        #save file to correct folder in server
+                        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                        #save to database path to uploaded files should maybe use url_for() but easy change to be made later
+                        event_image = '/static/media/%s' % (filename)
+                else:
+                        #if no image attached we can have placeholder images or empty images or whatever
+                        event_image = '/PATH/TO/PLACE/HOLDER'
+                
+                
+                u = Event(event_name, event_description, current_user.id, event_price, event_location, event_image)
                 db_session.add(u)
                 db_session.commit()
                 e = Event.query.filter_by(user=current_user.id).all()

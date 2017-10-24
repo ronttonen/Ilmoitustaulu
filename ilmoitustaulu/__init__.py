@@ -9,6 +9,11 @@ app = Flask(__name__)
 
 app.secret_key = 'ron'
 
+UPLOAD_FOLDER = '/home/ron/Ilmoitustaulu/ilmoitustaulu/static/media'
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 login_manager = LoginManager()
 login_manager.init_app(app)
 
