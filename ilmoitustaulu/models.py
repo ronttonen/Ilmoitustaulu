@@ -52,6 +52,7 @@ class Event(Base):
 
      
 class UserSavedEvents(Base):
+    __tablename__='usersavedevents'
     id = Column(Integer, primary_key = True)
     user = Column(Integer, ForeignKey(User.id), unique=False)
     event = Column(Integer, ForeignKey(Event.id), unique=False)
