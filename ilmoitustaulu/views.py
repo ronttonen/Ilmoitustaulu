@@ -65,13 +65,18 @@ def login():
 def create_event():
         if request.method == 'POST':
                 event_name = request.form['event_name']
-                event_description = request.form['description']
-                u = Event(event_name, event_description, current_user.id)
+                event_description = request.form['event_description']
+                event_price = request.form['event_price']
+                event_location = request.form['event_location']
+                #event_image
+                u = Event(event_name, event_description, current_user.id, event_price, event_location)
                 db_session.add(u)
                 db_session.commit()
                 e = Event.query.filter_by(user=current_user.id).all()
                 e=e[-1]
                 return redirect('/event/%s' %(str(e.urlid)))
+        
+        
         
         return render_template("create_event.html")
 
@@ -96,7 +101,10 @@ def logout():
 @app.route('/event/<eventurlid>')
 def event(eventurlid):
         info = Event.query.filter_by(urlid = eventurlid).first()
+        
         return render_template('event.html', info=info)
+
+
 
 
 

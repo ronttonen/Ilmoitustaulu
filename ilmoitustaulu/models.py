@@ -35,15 +35,19 @@ class Event(Base):
     description = Column(String(255), unique=False)
     image = Column(String(255), unique=True)
     user =  Column(Integer, ForeignKey(User.id), nullable=False)
+    price = Column(String(25), unique=False)
+    location = Column(String(55), unique=False)
     urlid = Column(String(50), unique=True)
     
     #user_Id = relationship('User', foreign_keys='Event.user')
 
     
-    def __init__(self, name=None, description=None, user=None, image=None):
+    def __init__(self, name=None, description=None, user=None, price=None, location=None):
         self.name = name
         self.description = description
         self.user = user
+        self.price = price
+        self.location = location
         self.image = name + '_%s' % str(time.time()).replace(".", "")
         self.urlid = name + '_%s' % str(time.time()).replace(".", "") 
     #ei pakollinen    
