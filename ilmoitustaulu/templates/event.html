@@ -1,12 +1,24 @@
 {% extends 'layout.html' %}
 {% block content %}
-<div class="single_event">
-	<h1>{{ info.name }}</h1>
-	<p>{{ info.description }}</p>
-	<p>{{ info.location }}</p>
-	<img src="{{ info.image }}">
+<div class="container">
+	
+	<h1 class="page-header">{{ info.name }}</h1>
+	<div class="container">
+		<div class="row ">
+			<div class="col-md-3">
+				<p class="text-left">{{ info.location }}</p>
+			</div>
+			<div class="col-md-3">
+				<p class="text">{{ info.description }}</p>
+			</div>
+			<div class="col-md-6">
+				<img class="center-block" src="{{ info.image }}">
+			</div>
+		</div>
+	</div>
+	
 	{% if info.user == current_user.id %}
-	you are allowed to modify this
+	<h3>You are allowed to modify this</h3>
 	{% endif %}
 	
 </div>

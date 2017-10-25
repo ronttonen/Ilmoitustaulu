@@ -1,42 +1,39 @@
 <!DOCTYPE html>
-	<html>
+	<html lang=en>
 		<head>
-			<link rel="stylesheet" type="text/css" href="../static/css/styles.css">
-			<script src='../static/js/example.js'></script>
-			
+			<meta charset="utf-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1">
+			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+				  
 		</head>
 			<body>
-				<div class="container">	
-						<nav>
-							<ul>
-								<li><a class="active" href="{{ url_for('index') }}">Home</a></li>
-								{% if current_user.is_authenticated %}
-								<li><a href="{{ url_for('user_settings', username = current_user.name) }}">Settings</a></li>
-								<li><a href="{{ url_for('logout') }}">Logout</a></li>
-								{% else %}
-								<li><a href="{{ url_for('login') }}">Login</a></li>
-								{% endif %}
-								<li><a href="{{ url_for('list_events') }}">List Events</a></li>
-								{% if current_user.is_authenticated %}
-								<li><a href="{{ url_for('create_event') }}">Create Event</a></li>
-								<li>
-									<div class="a2a_kit a2a_kit_size_32 a2a_default_style">
-										<a class="a2a_dd" href="https://www.addtoany.com/share"></a>
-										<a class="a2a_button_facebook"></a>
-										<a class="a2a_button_twitter"></a>
-										<a class="a2a_button_email"></a>
-										<a class="a2a_button_copy_link"></a>
-										<a class="a2a_button_google_plus"></a>
-									</div>
-								</li>
-								<script async src="https://static.addtoany.com/menu/page.js"></script>
-								{% endif %}
-							</ul>
+				
+					<div class='container'>
+						<nav class="navbar navbar-inverse">
+							<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+								<ul class="nav navbar-nav">
+									<li><a class="active" href="{{ url_for('index') }}">Home</a></li>
+									{% if current_user.is_authenticated %}
+									<li><a href="{{ url_for('user_settings', username = current_user.name) }}">Settings</a></li>
+									<li><a href="{{ url_for('logout') }}">Logout</a></li>
+									{% else %}
+									<li><a href="{{ url_for('login') }}">Login</a></li>
+									{% endif %}
+									<li><a href="{{ url_for('list_events') }}">List Events</a></li>
+									{% if current_user.is_authenticated %}
+									<li><a href="{{ url_for('create_event') }}">Create Event</a></li>
+									{% endif %}
+								</ul>
+							</div>
 						</nav>
+				
 						
 					{% block content %}
 					{% endblock %}
-				</div>	
+				</div>
+				
 			</body>
 		
 	</html>

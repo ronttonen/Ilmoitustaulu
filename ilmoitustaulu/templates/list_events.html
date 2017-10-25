@@ -1,24 +1,13 @@
 {% extends 'layout.html' %}
 {% block content %}
 
-<div class="col">
-	<h1>Here are all events</h1>
-</div>
-<div class=content>
-	<div class="colgreyleft">
-		{% for event in events %}
-		<li>{{ event.name }}, <a href="{{ url_for('event', eventurlid=event.urlid) }}">{{ event.urlid }}</a></li>
-		{% endfor %}
-		 </div>
-	<div class="colgreyright">
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur tristique iaculis
-		augue, sit amet vulputate neque dapibus eu. In hac habitasse platea dictumst. Phasellus dignissim lacinia
-		nulla non cursus. Vivamus quis maximus lacus. Maecenas ac urna sit amet eros lacinia scelerisque at eu massa.
-		Vivamus nec gravida dolor. Morbi ullamcorper, velit nec ultricies
-		rhoncus, velit mauris vestibulum orci, non dapibus dolor lectus nec mi. Pellentesque sit amet magna commodo,
-		rutrum sapien in, posuere lorem. Ut vel gravida dui. Sed ornare imperdiet purus,
-		eget consectetur lectus cursus sodales. Aenean </div>
+	<h1 class="page-header">Here are all events</h1>
+		<div class="list-group">
+			{% for event in events %}
+			<li class="list-group-item text-capitalize">{{ event.name }}, <a href="{{ url_for('event', eventurlid=event.urlid) }}">{{ event.urlid }}</a></li>
+			{% endfor %}
+		</div>
+	
 
-</div>
-<script></script>
+
 {% endblock %}
