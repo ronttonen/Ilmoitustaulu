@@ -9,6 +9,7 @@ from flask_login import LoginManager, login_user, logout_user, login_required, c
 import hashlib, uuid
 from werkzeug.utils import secure_filename
 from flask_mail import Mail, Message
+import json
 
 
 #check if uploaded file extension is in ALLOWED_EXTENSIONS (defined in __init__.py)
@@ -210,6 +211,19 @@ def password_reset():
                 return redirect('/')
                 
         return render_template('forgotpassword.html')
+
+@app.route('/search/', methods=['GET'])
+def search():
+	keyword = request.args.get("keyword")
+	events = Event.query.filter(Event.name.like("%"+keyword+"%")).all()
+	json = '{"events":{'
+	for event in events:
+		json += '"'+event.name+'":{ "name":"'+ event.name + '","urlid":"' + event.urlid + '"},'
+	
+	json = json[:-1]
+
+	json += '}}'
+	return json
 
 @app.errorhandler(401)
 def unauthorized(e):

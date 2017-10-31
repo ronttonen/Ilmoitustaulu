@@ -1,13 +1,39 @@
 {% extends 'layout.html' %}
 {% block content %}
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript">
+			k = "";
+			y = "";
+			$(document).ready(function(){
+				$("#submit-search").click(function(){
+					data = $("#searchfield").val();
+					$.ajax({
+						url: "/search/",
+						data: "keyword="+data,
+						success: function(result){
+							//list results to list-group
+							console.log(result);
+							k = result;
+							y = JSON.parse(result);
+							$(".list-group").html(" ");
+							$.each(y.events, function(){
+								$(".list-group").append('<li class="list-group-item text-capitalize">'+this.name+', <a href="/event/'+this.urlid+'">'+this.urlid+'</a></li>');
+							});
 
-	<h1 class="page-header">Here are all events</h1>
+						}
+					});
+				});
+			});
+		</script>
+		<h1 class="page-header">Here are all events</h1>
+		<div class="searchbox">
+			<label for="searchword">Search</label>
+			<input type="text" name="searchword" id="searchfield"/>
+			<button type="button" id="submit-search">Find</button>
+		</div>
 		<div class="list-group">
 			{% for event in events %}
 			<li class="list-group-item text-capitalize">{{ event.name }}, <a href="{{ url_for('event', eventurlid=event.urlid) }}">{{ event.urlid }}</a></li>
 			{% endfor %}
 		</div>
-	
-
-
 {% endblock %}
