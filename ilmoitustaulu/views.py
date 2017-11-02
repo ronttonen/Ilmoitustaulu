@@ -93,10 +93,10 @@ def create_event():
                         #save file to correct folder in server
                         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                         #save to database path to uploaded files should maybe use url_for() but easy change to be made later
-                        event_image = '/static/media/%s' % (filename)
+                        event_image = '/static/user_media/%s' % (filename)
                 else:
                         #if no image attached we can have placeholder images or empty images or whatever
-                        event_image = '/PATH/TO/PLACE/HOLDER'
+                        event_image = '/static/media/placeholder.png'
                 
                 
                 u = Event(event_name, event_description, current_user.id, event_price, event_location, event_image)

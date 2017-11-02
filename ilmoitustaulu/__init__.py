@@ -25,7 +25,7 @@ mail=Mail(app)
 app.secret_key = 'ron'
 
 #configure folder where uploads should go
-UPLOAD_FOLDER = '/home/ron/Ilmoitustaulu/ilmoitustaulu/static/media'
+UPLOAD_FOLDER = '/home/ron/Ilmoitustaulu/ilmoitustaulu/static/user_media'
 #allowed extensions on uploaded files, should take txt off
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
