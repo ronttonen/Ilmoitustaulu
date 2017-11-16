@@ -81,31 +81,37 @@ def login():
 @login_required
 def create_event():
         if request.method == 'POST':
-                event_name = request.form['event_name']
-                event_description = request.form['event_description']
-                event_price = request.form['event_price']
-                event_location = request.form['event_location']
+				event_name = request.form['event_name']
+				event_description = request.form['event_description']
+				event_price = request.form['event_price']
+				event_location = request.form['event_location']
+				event_category = request.form['event_category']
+				
+				if event_category != 'bileet' and event_category != 'haat' and event_category != 'opm' and event_category != 'juhlat':
+					return redirect('/')
+				
+				event_category[0].toUpperCase()
                 #file upload works, just need to fix the paths to work on production also, anyways the main idea is here
-                file = request.files['file']
-                if file and allowed_file(file.filename):
-                        #change name to time and random integer
-                        file.filename = '%s%s.%s' % (str(time.time()).replace(".", ""), randint(11111, 99999), file.filename.rsplit('.', 1)[1].lower())
-                        filename = secure_filename(file.filename)
-                        #save file to correct folder in server
-                        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                        #save to database path to uploaded files should maybe use url_for() but easy change to be made later
-                        event_image = '/static/user_media/%s' % (filename)
-                else:
-                        #if no image attached we can have placeholder images or empty images or whatever
-                        event_image = '/static/media/placeholder.png'
+				file = request.files['file']
+				if file and allowed_file(file.filename):
+                    #change name to time and random integer
+					file.filename = '%s%s.%s' % (str(time.time()).replace(".", ""), randint(11111, 99999), file.filename.rsplit('.', 1)[1].lower())
+					filename = secure_filename(file.filename)
+                    #save file to correct folder in server
+					file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                    #save to database path to uploaded files should maybe use url_for() but easy change to be made later
+					event_image = '/static/user_media/%s' % (filename)
+				else:
+                    #if no image attached we can have placeholder images or empty images or whatever
+					event_image = '/static/media/placeholder.png'
                 
                 
-                u = Event(event_name, event_description, current_user.id, event_price, event_location, event_image)
-                db_session.add(u)
-                db_session.commit()
-                e = Event.query.filter_by(user=current_user.id).all()
-                e=e[-1]
-                return redirect('/event/%s' %(str(e.urlid)))
+				u = Event(event_name, event_description, current_user.id, event_price, event_location, event_image, event_category)
+				db_session.add(u)
+				db_session.commit()
+				e = Event.query.filter_by(user=current_user.id).all()
+				e=e[-1]
+				return redirect('/event/%s' %(str(e.urlid)))
         
         
         
