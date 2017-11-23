@@ -23,6 +23,24 @@
 						}
 					});
 				});
+				
+				$('.save-event-button).click(function() {
+					var eventData = this.id;
+				  	$.ajax({
+				  		url: "/memorize-event/",
+				  		data: eventData,
+				  		success: function(response) {
+							if ($('#eventData').className = 'save-event-button') {	
+								$('#eventData').className = 'saved-event'
+							} else if ($('#eventData').className = 'saved-event') {
+								$('#eventData').className = 'save-event-button'
+							} else {
+								return;
+							}
+						}
+				  	});
+				});
+				
 			});
 		</script>
 		<h1 class="page-header">Here are all events</h1>
@@ -34,7 +52,11 @@
 		<div class="list-group">
 			{% for event in events %}
 			<li class="list-group-item text-capitalize">{{ event.name }}, <a href="{{ url_for('event', eventurlid=event.urlid) }}">{{ event.urlid }}</a></li>
-			<button></button>
+			{% if current_user.not_saved %}
+			<button type="button" class="save-event-button" id="{{ event.id }}"></button>
+			{% else %}
+			<button type="button" class="saved-event" id="{{ event.id }}"></button>
+			{% endif %}
 			{% endfor %}
 		</div>
 {% endblock %}
