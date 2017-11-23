@@ -34,6 +34,7 @@
 		<div class="list-group">
 			{% for event in events %}
 			<li class="list-group-item text-capitalize">{{ event.name }}, <a href="{{ url_for('event', eventurlid=event.urlid) }}">{{ event.urlid }}</a></li>
+			<button></button>
 			{% endfor %}
 		</div>
 {% endblock %}
