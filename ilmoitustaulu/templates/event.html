@@ -1,8 +1,33 @@
 {% extends 'layout.html' %}
 {% block content %}
 <div class="container">
-	
+	<script >
+		$(document).ready(function(){
+			$("#saveeventbutton").click(function(){
+				$.ajax({
+					'url': '/saveevent/{{info.id}}',
+					success: function(res){
+						if(res == "saved"){
+							$("#saveeventbutton").html("Forget event");
+						}
+						else if (res == "deleted"){
+							$("#saveeventbutton").html("Save event");
+						}
+						else{
+							console.log("fail");
+						}
+					}
+				});
+			});	
+		});
+	</script>
 	<h1 class="page-header">{{ info.name }}</h1>
+	{% if memory == 1%}
+		<button id="saveeventbutton">Forget event</button>
+	{% else %}
+		<button id="saveeventbutton">Save event</button>
+	{% endif %}
+	
 	<div class="container">
 		<div class="row ">
 			<div class="col-md-3">
@@ -18,10 +43,10 @@
 			</div>
 		</div>
 	</div>
-	
 	{% if info.user == current_user.id %}
 	<h3>You are allowed to modify this</h3>
 	{% endif %}
+	
 	
 </div>
 {% endblock %}

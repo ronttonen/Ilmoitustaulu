@@ -7,15 +7,16 @@
 			$(document).ready(function(){
 				$("#submit-search").click(function(){
 					data = $("#searchfield").val();
+					category = $("#category").val();
 					$.ajax({
 						url: "/search/",
-						data: "keyword="+data,
+						data: {"search": data, "category": category},
 						success: function(result){
 							//list results to list-group
 							console.log(result);
+							$(".list-group").html("");
 							k = result;
 							y = JSON.parse(result);
-							$(".list-group").html(" ");
 							$.each(y.events, function(){
 								$(".list-group").append('<li class="list-group-item text-capitalize">'+this.name+', <a href="/event/'+this.urlid+'">'+this.urlid+'</a></li>');
 							});
@@ -24,7 +25,7 @@
 					});
 				});
 				
-				$('.save-event-button).click(function() {
+				$('.save-event-button').click(function() {
 					var eventData = this.id;
 				  	$.ajax({
 				  		url: "/memorize-event/",
@@ -47,16 +48,26 @@
 		<div class="searchbox">
 			<label for="searchword">Search</label>
 			<input type="text" name="searchword" id="searchfield"/>
+			
+			<label for="categoryselect">Category</label>
+			<select name="category" id="category">
+				<option value="bileet">Bileet</option>
+				<option value="haat">Häät</option>
+				<option value="juhlat">Juhlat</option>
+				<option value="opm">Opm</option>
+			</select>
 			<button type="button" id="submit-search">Find</button>
 		</div>
 		<div class="list-group">
 			{% for event in events %}
-			<li class="list-group-item text-capitalize">{{ event.name }}, <a href="{{ url_for('event', eventurlid=event.urlid) }}">{{ event.urlid }}</a></li>
-			{% if current_user.not_saved %}
-			<button type="button" class="save-event-button" id="{{ event.id }}"></button>
+			<li class="list-group-item text-capitalize">{{ event.name }}, <a href="{{ url_for('event', eventurlid=event.urlid) }}">{{ event.urlid }}</a>
+			<!--
+			   {% if current_user.not_saved %}
+			<button type="button" class="save-event-button" id="{{ event.id }}">Save event</button>
 			{% else %}
-			<button type="button" class="saved-event" id="{{ event.id }}"></button>
-			{% endif %}
+			<button type="button" class="saved-event" id="{{ event.id }}">Forget event</button>
+			{% endif %}</li>
+			-->
 			{% endfor %}
 		</div>
 {% endblock %}

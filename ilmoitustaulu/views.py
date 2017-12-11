@@ -11,7 +11,6 @@ from werkzeug.utils import secure_filename
 from flask_mail import Mail, Message
 import json
 
-
 #check if uploaded file extension is in ALLOWED_EXTENSIONS (defined in __init__.py)
 def allowed_file(filename):
     return '.' in filename and \
@@ -142,8 +141,8 @@ def event(eventurlid):
                 return redirect('/')
         
         info = Event.query.filter_by(urlid = eventurlid).first()
-        
-        return render_template('event.html', info=info)
+        memory = UserSavedEvents.query.filter(UserSavedEvents.user == current_user.id, UserSavedEvents.event == info.id).count()
+        return render_template('event.html', info=info, memory=memory)
 
 @app.route('/settings/<username>', methods=['GET', 'POST'])
 def user_settings(username):
@@ -220,8 +219,9 @@ def password_reset():
 
 @app.route('/search/', methods=['GET'])
 def search():
-	keyword = request.args.get("keyword")
-	events = Event.query.filter(Event.name.like("%"+keyword+"%")).all()
+	keyword = request.args.get("search")
+	category = request.args.get("category")
+	events = Event.query.filter(Event.name.like("%"+keyword+"%"),Event.category == category).all()
 	json = '{"events":{'
 	for event in events:
 		json += '"'+event.name+'":{ "name":"'+ event.name + '","urlid":"' + event.urlid + '"},'
@@ -231,9 +231,40 @@ def search():
 	json += '}}'
 	return json
 
+@app.route('/saveevent/<eventid>')
+def saveevent(eventid):
+	if (UserSavedEvents.query.filter(UserSavedEvents.user == current_user.id, UserSavedEvents.event == eventid).count() == 0):
+		u = UserSavedEvents(current_user.id, eventid)
+		db_session.add(u)
+		db_session.commit()
+		return "saved"
+	else:
+		UserSavedEvents.query.filter(UserSavedEvents.user == current_user.id, UserSavedEvents.event == eventid).delete()
+		db_session.commit()
+		return "deleted"
+	return "False"
+		
+	
+@app.route('/savedevents/')
+def savedevents():
+	
+	eventids = UserSavedEvents.query.all()
+	allids = "("
+	for ids in eventids:
+		allids += str(ids.event) + ","
+		
+	allids = allids[:-1]
+	allids += ")"
+	
+	print allids
+	#events = Event.query.filter(Event.id.in_((allids))).all()
+	events = db_session.execute("SELECT * FROM events WHERE id IN "+str(allids))
+	return render_template("savedevents.html", events=events)
+
 @app.errorhandler(401)
 def unauthorized(e):
         return render_template("401.html")
+
 
 
 #just a test to check out how mailing service works
