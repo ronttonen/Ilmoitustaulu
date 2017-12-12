@@ -89,7 +89,7 @@ def create_event():
 				if event_category != 'bileet' and event_category != 'haat' and event_category != 'opm' and event_category != 'juhlat':
 					return redirect('/')
 				
-				event_category[0].toUpperCase()
+				#event_category[0].toUpperCase()
                 #file upload works, just need to fix the paths to work on production also, anyways the main idea is here
 				file = request.files['file']
 				if file and allowed_file(file.filename):
