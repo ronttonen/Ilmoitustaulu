@@ -11,7 +11,6 @@ from werkzeug.utils import secure_filename
 from flask_mail import Mail, Message
 import json
 
-
 #check if uploaded file extension is in ALLOWED_EXTENSIONS (defined in __init__.py)
 def allowed_file(filename):
     return '.' in filename and \
@@ -81,31 +80,37 @@ def login():
 @login_required
 def create_event():
         if request.method == 'POST':
-                event_name = request.form['event_name']
-                event_description = request.form['event_description']
-                event_price = request.form['event_price']
-                event_location = request.form['event_location']
+				event_name = request.form['event_name']
+				event_description = request.form['event_description']
+				event_price = request.form['event_price']
+				event_location = request.form['event_location']
+				event_category = request.form['event_category']
+				
+				if event_category != 'bileet' and event_category != 'haat' and event_category != 'opm' and event_category != 'juhlat':
+					return redirect('/')
+				
+				event_category[0].toUpperCase()
                 #file upload works, just need to fix the paths to work on production also, anyways the main idea is here
-                file = request.files['file']
-                if file and allowed_file(file.filename):
-                        #change name to time and random integer
-                        file.filename = '%s%s.%s' % (str(time.time()).replace(".", ""), randint(11111, 99999), file.filename.rsplit('.', 1)[1].lower())
-                        filename = secure_filename(file.filename)
-                        #save file to correct folder in server
-                        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                        #save to database path to uploaded files should maybe use url_for() but easy change to be made later
-                        event_image = '/static/user_media/%s' % (filename)
-                else:
-                        #if no image attached we can have placeholder images or empty images or whatever
-                        event_image = '/static/media/placeholder.png'
+				file = request.files['file']
+				if file and allowed_file(file.filename):
+                    #change name to time and random integer
+					file.filename = '%s%s.%s' % (str(time.time()).replace(".", ""), randint(11111, 99999), file.filename.rsplit('.', 1)[1].lower())
+					filename = secure_filename(file.filename)
+                    #save file to correct folder in server
+					file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                    #save to database path to uploaded files should maybe use url_for() but easy change to be made later
+					event_image = '/static/user_media/%s' % (filename)
+				else:
+                    #if no image attached we can have placeholder images or empty images or whatever
+					event_image = '/static/media/placeholder.png'
                 
                 
-                u = Event(event_name, event_description, current_user.id, event_price, event_location, event_image)
-                db_session.add(u)
-                db_session.commit()
-                e = Event.query.filter_by(user=current_user.id).all()
-                e=e[-1]
-                return redirect('/event/%s' %(str(e.urlid)))
+				u = Event(event_name, event_description, current_user.id, event_price, event_location, event_image, event_category)
+				db_session.add(u)
+				db_session.commit()
+				e = Event.query.filter_by(user=current_user.id).all()
+				e=e[-1]
+				return redirect('/event/%s' %(str(e.urlid)))
         
         
         
@@ -136,8 +141,8 @@ def event(eventurlid):
                 return redirect('/')
         
         info = Event.query.filter_by(urlid = eventurlid).first()
-        
-        return render_template('event.html', info=info)
+        memory = UserSavedEvents.query.filter(UserSavedEvents.user == current_user.id, UserSavedEvents.event == info.id).count()
+        return render_template('event.html', info=info, memory=memory)
 
 @app.route('/settings/<username>', methods=['GET', 'POST'])
 def user_settings(username):
@@ -214,8 +219,9 @@ def password_reset():
 
 @app.route('/search/', methods=['GET'])
 def search():
-	keyword = request.args.get("keyword")
-	events = Event.query.filter(Event.name.like("%"+keyword+"%")).all()
+	keyword = request.args.get("search")
+	category = request.args.get("category")
+	events = Event.query.filter(Event.name.like("%"+keyword+"%"),Event.category == category).all()
 	json = '{"events":{'
 	for event in events:
 		json += '"'+event.name+'":{ "name":"'+ event.name + '","urlid":"' + event.urlid + '"},'
@@ -225,9 +231,40 @@ def search():
 	json += '}}'
 	return json
 
+@app.route('/saveevent/<eventid>')
+def saveevent(eventid):
+	if (UserSavedEvents.query.filter(UserSavedEvents.user == current_user.id, UserSavedEvents.event == eventid).count() == 0):
+		u = UserSavedEvents(current_user.id, eventid)
+		db_session.add(u)
+		db_session.commit()
+		return "saved"
+	else:
+		UserSavedEvents.query.filter(UserSavedEvents.user == current_user.id, UserSavedEvents.event == eventid).delete()
+		db_session.commit()
+		return "deleted"
+	return "False"
+		
+	
+@app.route('/savedevents/')
+def savedevents():
+	
+	eventids = UserSavedEvents.query.all()
+	allids = "("
+	for ids in eventids:
+		allids += str(ids.event) + ","
+		
+	allids = allids[:-1]
+	allids += ")"
+	
+	print allids
+	#events = Event.query.filter(Event.id.in_((allids))).all()
+	events = db_session.execute("SELECT * FROM events WHERE id IN "+str(allids))
+	return render_template("savedevents.html", events=events)
+
 @app.errorhandler(401)
 def unauthorized(e):
         return render_template("401.html")
+
 
 
 #just a test to check out how mailing service works

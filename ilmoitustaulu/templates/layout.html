@@ -26,6 +26,9 @@
 									{% if current_user.is_authenticated %}
 									<li><a href="{{ url_for('create_event') }}">Create Event</a></li>
 									{% endif %}
+									{% if current_user.is_authenticated %}
+									<li><a href="{{ url_for('savedevents') }}">Saved Events</a></li>
+									{% endif %}
 								</ul>
 							</div>
 						</nav>

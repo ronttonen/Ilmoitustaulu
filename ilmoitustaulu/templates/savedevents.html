@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+{% block content %}
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+		<h1 class="page-header">Saved events</h1>
+		<div class="list-group">
+			{% for event in events %}
+			
+			<li class="list-group-item text-capitalize">{{ event.name }}, <a href="{{ url_for('event', eventurlid=event.urlid) }}">{{ event.urlid }}</a>
+			<!--
+			   {% if current_user.not_saved %}
+			<button type="button" class="save-event-button" id="{{ event.id }}">Save event</button>
+			{% else %}
+			<button type="button" class="saved-event" id="{{ event.id }}">Forget event</button>
+			{% endif %}</li>
+			-->
+			{% endfor %}
+		</div>
+{% endblock %}
